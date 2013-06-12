@@ -16,5 +16,5 @@
   -webkit-font-smoothing: antialiased;
 }
 <% for glyph in font.glyphs do %>
-.<%= font.identifier %>.<%= glyph.name %>:before{content:'\<%= "\\%04x" % glyph.code %>'}
+.<%= font.identifier %>.<%= glyph.name %>:before{content:'\<%= "\%04x" % glyph.code %>'}
 <% end %>

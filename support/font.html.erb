@@ -5,10 +5,16 @@
     <title><%= font.name %> | FontSmith</title>
     <link rel="stylesheet" href="<%= File.basename(font.css_path) %>" />
     <style type="text/css">
-      .<%= font.identifier %> {
-        display: inline-block;
-        width: 28px;
-        height: 28px;
+      .<%= font.identifier %>.small {
+        font-size: 40px;
+      }
+
+      .<%= font.identifier %>.medium {
+        font-size: 68px;
+      }
+
+      .<%= font.identifier %>.big {
+        font-size: 98px;
       }
     </style>
   </head>
@@ -18,6 +24,8 @@
         <tr>
           <th>Name</th>
           <th>Icon</th>
+          <th></th>
+          <th></th>
           <th>Code</th>
         </tr>
       </thead>
@@ -25,7 +33,9 @@
         <% for glyph in font.glyphs do %>
           <tr>
             <td><%= glyph.name %></td>
-            <td><span class="<%= font.identifier %> <%= glyph.name %>"></span></td>
+            <td><span class="<%= font.identifier %> <%= glyph.name %> small"></span></td>
+            <td><span class="<%= font.identifier %> <%= glyph.name %> medium"></span></td>
+            <td><span class="<%= font.identifier %> <%= glyph.name %> big"></span></td>            
             <td><%= "\\%04x" % glyph.code %></td>
           </tr>
         <% end %>
