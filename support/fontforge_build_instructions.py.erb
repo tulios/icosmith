@@ -1,0 +1,56 @@
+import fontforge
+import psMat
+
+# --------------------------------------------------------------------------
+# Helper functions
+# --------------------------------------------------------------------------
+
+def scale(char, origin, scale):
+    """Rescale glyph"""
+    # move scale origin point to (0, 0)
+    sx, sy = origin
+    translate_matrix = psMat.translate(-sx, -sy)
+    char.transform(translate_matrix)
+
+    # scale around (0, 0)
+    scale_matrix = psMat.scale(scale)
+    char.transform(scale_matrix)
+
+    # move scale origin point back to its old position
+    translate_matrix = psMat.translate(origin)
+    char.transform(translate_matrix)
+    
+def position(char, offset):
+    """Repositions the glyph"""
+    offset_matrix = psMat.translate(0, offset * <%= ascent + descent %>)
+    char.transform(offset_matrix)
+    
+# --------------------------------------------------------------------------
+# Forging instructions
+# --------------------------------------------------------------------------
+
+font = fontforge.font()
+
+font.encoding   = 'UnicodeFull'
+font.version    = "<%= version %>"
+font.fontname   = "<%= identifier %>"
+font.fullname   = "<%= name %>"
+font.familyname = "<%= family %>"
+font.copyright  = "<%= copyright %>"
+font.ascent     = <%= ascent %>
+font.descent    = <%= descent %>
+font.weight     = "<%= weight %>"
+
+<% for glyph in glyphs do %>
+# <%= glyph.name %>
+c = font.createChar(<%= glyph.code %>)
+c.importOutlines("<%= glyph.source %>")
+c.left_side_bearing = <%= glyph.left_side_bearing %>
+c.right_side_bearing = <%= glyph.right_side_bearing %>
+c.simplify()
+c.round()
+<%= "scale(c, (#{origin.x}, #{origin.y}), #{glyph.scale})" if glyph.scale %>
+<%= "position(c, #{glyph.offset})" if glyph.offset %>
+<% end %>
+
+font.generate("<%= ttf_path %>")

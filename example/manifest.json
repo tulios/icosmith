@@ -1,0 +1,9 @@
+{
+  "name": "example-1",
+  "family": "Example1",
+  "version": "1.0",
+  "copyright": "IcoMoon",
+  "glyphs": [
+    {"code": "0xe001", "name": "star"}
+  ]
+}

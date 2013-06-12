@@ -1,0 +1,6 @@
+import fontforge
+
+font = fontforge.open("<%= ttf_path %>")
+font.generate("<%= svg_path %>")
+font.generate("<%= eot_path %>")
+font.generate("<%= woff_path %>")

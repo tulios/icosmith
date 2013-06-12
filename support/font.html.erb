@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset=utf-8 />
+    <title><%= font.name %> | FontSmith</title>
+    <link rel="stylesheet" href="<%= File.basename(font.css_path) %>" />
+    <style type="text/css">
+      .<%= font.identifier %> {
+        display: inline-block;
+        width: 28px;
+        height: 28px;
+      }
+    </style>
+  </head>
+  <body>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Icon</th>
+          <th>Code</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for glyph in font.glyphs do %>
+          <tr>
+            <td><%= glyph.name %></td>
+            <td><span class="<%= font.identifier %> <%= glyph.name %>"></span></td>
+            <td><%= "\\%04x" % glyph.code %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </body>
+</html>

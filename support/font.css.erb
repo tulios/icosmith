@@ -1,0 +1,20 @@
+@font-face {
+  font-family: '<%= font.family %>';
+  src: url('<%= File.basename(font.eot_path) %>');
+  src: url('<%= File.basename(font.eot_path) %>?#iefix') format('embedded-opentype'),
+       url('<%= File.basename(font.ttf_path) %>') format('truetype'),
+       url('<%= File.basename(font.svg_path) %>#<%= font.identifier %>') format('svg');
+}
+
+.<%= font.identifier %> {
+  font-family:'<%= font.family %>';
+  font-weight: normal;
+  font-style: normal;
+  line-height: 1;
+  letter-spacing: 0;
+  speak: none;
+  -webkit-font-smoothing: antialiased;
+}
+<% for glyph in font.glyphs do %>
+.<%= font.identifier %>.<%= glyph.name %>:before{content:'\<%= "\\%04x" % glyph.code %>'}
+<% end %>
