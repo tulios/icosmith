@@ -6,6 +6,8 @@ require "sinatra"
 require "fileutils"
 require "blacksmith"
 require "json"
+require "tempfile"
+require "base64"
 require "active_support/core_ext/hash"
 require "active_support/core_ext/string"
 
@@ -25,21 +27,39 @@ get "/upload" do
 end
 
 post "/upload" do
-  file = params["file"]
-  file_name = file[:filename]
-  dir_name = file_name.gsub(/\.zip$/, '')
-  temp_file = file[:tempfile].path
+  begin
+    unless params["base64zip"].blank?
+      @tmp_file = file = Tempfile.open(["#{Time.now.to_i}", ".zip"])
+      file.write Base64.decode64(params["base64zip"])
 
-  Dir.mktmpdir do |dir|
-    upload_path = "#{dir}/#{dir_name}"
-    unzip! temp_file, upload_path
-    manifest = load_manifest(upload_path)
-    forge_font! manifest, upload_path
+      file_name = file.path.scan(/\/([^\/]+)$/).flatten.first
+      dir_name = file.path.gsub(file_name, '').gsub(/\/$/, '')
+      temp_file = file
 
-    filename = zip_name(manifest)
-    result_path = zip! upload_path, filename
+    else
+      file = params["file"]
+      file_name = file[:filename]
+      dir_name = file_name.gsub(/\.zip$/, '')
+      temp_file = file[:tempfile].path
+    end
 
-    send_file result_path, filename: filename
+    Dir.mktmpdir do |dir|
+      upload_path = "#{dir}/#{dir_name}"
+      unzip! temp_file, upload_path
+      manifest = load_manifest(upload_path)
+      forge_font! manifest, upload_path
+      prepare_package! upload_path
+
+      filename = zip_name(manifest)
+      result_path = zip! upload_path, filename
+
+      send_file result_path, filename: filename
+    end
+  ensure
+    if @tmp_file
+      @tmp_file.close
+      @tmp_file.unlink
+    end
   end
 end
 
@@ -100,6 +120,11 @@ def forge_font! manifest, source_path
       glyph name, {code: code}.merge(g)
     end
   end
+end
+
+def prepare_package! path
+  build_directory = "#{path}/build"
+  FileUtils.cp "support/bootstrap.min.css", build_directory
 end
 
 def default_manifest

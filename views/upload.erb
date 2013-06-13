@@ -3,12 +3,23 @@
   <head>
     <meta charset="UTF-8" />
     <title>FontSmith</title>
+    <link href="stylesheets/style.css" media="screen" rel="stylesheet" type="text/css" />
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script type="text/javascript" src="javascripts/jszip.js"></script>
+    <script type="text/javascript" src="javascripts/dropzone.js"></script>
+    <script type="text/javascript" src="javascripts/script.js"></script>
   </head>
   <body>
-    <form method="post" enctype="multipart/form-data">
-      <input type="file" name="file">
-      <br/>
-      <input type="submit" value="Upload">
+    <h1>FontSmith</h1>
+    <form id="b64upload" action="/upload" method="post" enctype="multipart/form-data">
+      <input type="hidden" name="base64zip" value="">
     </form>
+
+    <form id="smith-upload" action="/upload" method="post" enctype="multipart/form-data" class="dropzone">
+    </form>
+    <p>
+      <em>Only <strong>*.svg</strong> and the <strong>manifest.json</strong></em>
+    </p>
+    <button id="send">Generate Font!</button>
   </body>
 </html>

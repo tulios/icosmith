@@ -1,0 +1,55 @@
+form.dropzone {
+  position: relative;
+  border: 1px solid rgba(0, 0, 0, 0.03);
+  min-height: 250px;
+  border-radius: 3px;
+  border-radius: 3px;
+  background: rgba(0, 0, 0, 0.03);
+  margin: 23px auto;
+  overflow: hidden;
+}
+form.dropzone.dz-drag-hover {
+  border-color: #00F;
+  color: #999;
+}
+.dz-message {
+  cursor: pointer;
+  text-align: center;
+  font-size: 30px;
+  position: absolute;
+  top: 80px;
+  left: 50%;
+  margin-left: -157px;
+}
+form.dz-started .dz-message {
+  opacity: 0.1;
+}
+.dz-message span {
+  width: 314px;
+  display: inline-block;
+}
+.dz-progress,
+.dz-success-mark,
+.dz-error-mark,
+.dz-size,
+.dz-details img {
+  display: none;
+}
+.dz-preview {
+  display: inline-block;
+  padding: 10px;
+  border: 1px solid #333;
+  margin: 5px;
+  float: left;
+  color: #000;
+}
+.dz-preview.dz-error {
+  border: 1px solid #CC0000;
+}
+.dz-preview.dz-error .dz-error-message {
+  display: block;
+  font-size: 13px;
+  background: #CDCDCD;
+  padding: 5px;
+  margin-top: 5PX;
+}
