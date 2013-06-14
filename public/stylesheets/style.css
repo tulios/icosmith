@@ -32,16 +32,43 @@ form.dz-started .dz-message {
 .dz-success-mark,
 .dz-error-mark,
 .dz-size,
+.dz-filename,
 .dz-details img {
   display: none;
 }
 .dz-preview {
   display: inline-block;
-  padding: 10px;
-  border: 1px solid #333;
+  padding: 10px 10px 5px 10px;
   margin: 5px;
   float: left;
   color: #000;
+  box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.35),inset 0 0 1px #FFF;
+  border-radius: 5px;
+  background: #F7F7F7;
+}
+.dz-preview .code {
+  margin-top: 5px;
+}
+.dz-preview .dz-details {
+  width: 45px;
+  height: 45px;
+}
+.dz-preview.manifest-json {
+  height: 68px;
+}
+.dz-preview.manifest-json {
+  text-transform: uppercase;
+  background: #333;
+  color: #F7F7F7;
+  display: table;
+}
+.dz-preview.manifest-json .dz-details {
+  width: auto;
+  height: auto;
+}
+.dz-preview.manifest-json span {
+  display: table-cell;
+  vertical-align: middle;
 }
 .dz-preview.dz-error {
   border: 1px solid #CC0000;
@@ -52,4 +79,13 @@ form.dz-started .dz-message {
   background: #CDCDCD;
   padding: 5px;
   margin-top: 5PX;
+}
+.info {
+  font-size: 20px;
+}
+.info .family {
+  margin-right: 10px;
+}
+.info .version {
+  font-weight: bold;
 }
