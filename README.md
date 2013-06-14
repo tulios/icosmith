@@ -1,7 +1,9 @@
 # FontSmith
 
+```sh
 brew install fontforge
 brew install ttfautohint
+```
 
 ```sh
 rackup config.ru
