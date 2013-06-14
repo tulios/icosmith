@@ -1,4 +1,4 @@
-# FontSmith
+# IcoSmith
 
 ```sh
 brew install fontforge
