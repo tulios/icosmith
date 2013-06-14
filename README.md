@@ -27,10 +27,10 @@ manifest.json example:
 ## Upload Page
 
 1)
-![ScreenShot](https://dl-web.dropbox.com/get/fontsmith/screenshots/fontsmith_start_upload.png?w=AADjiWMWnFsT9C2o9dU_Or237N30y4a6EKMZpUt3-bXDew)
+![ScreenShot](https://dl.dropboxusercontent.com/u/1799430/fontsmith/screenshots/fontsmith_start_upload.png)
 
 2) With your svgs and the manifest.json
-![ScreenShot](https://dl-web.dropbox.com/get/fontsmith/screenshots/fontsmith_upload.png?w=AAD7K-JBZkmTSsxkm06Pd4by7n3MsV5fYczspac8RCIMWg)
+![ScreenShot](https://dl.dropboxusercontent.com/u/1799430/fontsmith/screenshots/fontsmith_upload.png)
 
 ## Result Page
-![ScreenShot](https://dl-web.dropbox.com/get/fontsmith/screenshots/fontsmith_result.png?w=AAC322LFfFkSZ7BZi0qtWs-_9C0PH5gQ34FB1XhH898-Vw)
+![ScreenShot](https://dl.dropboxusercontent.com/u/1799430/fontsmith/screenshots/fontsmith_result.png)
