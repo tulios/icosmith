@@ -28,7 +28,11 @@ class FontGeneratorController < ApplicationController
       filename = zip_name(manifest)
       result_path = zip! upload_path, filename
 
-      send_file result_path, filename: filename
+      send_file(result_path, {
+        filename: filename,
+        type: "application/zip",
+        disposition: "attachment"
+      })
     end
   ensure
     if @tmp_file
@@ -63,6 +67,7 @@ class FontGeneratorController < ApplicationController
   end
 
   def zip_name manifest
+    return @filename if @filename
     "#{manifest[:name].parameterize}-v#{manifest[:version]}-#{Time.now.to_i}.zip"
   end
 
@@ -70,8 +75,9 @@ class FontGeneratorController < ApplicationController
     manifest = JSON.parse(File.read("#{path}/manifest.json")).symbolize_keys
     manifest = default_manifest.merge(manifest)
     manifest[:glyphs] = manifest[:glyphs].map {|glyph| default_glyph.merge(glyph.symbolize_keys)}
-
     manifest[:name] = manifest[:family] unless manifest[:name]
+
+    @filename = manifest.delete(:filename)
     manifest
   end
 

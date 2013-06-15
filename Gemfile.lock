@@ -31,6 +31,9 @@ GEM
     arel (3.0.2)
     blacksmith (0.3.2)
       smart_properties (~> 1.0)
+    bootstrap-sass-rails (2.3.2.0)
+      railties (>= 3.1.0)
+      sass-rails (>= 3.1.0)
     builder (3.0.4)
     coffee-rails (3.2.2)
       coffee-script (>= 2.2.0)
@@ -111,6 +114,7 @@ PLATFORMS
 
 DEPENDENCIES
   blacksmith (= 0.3.2)
+  bootstrap-sass-rails (= 2.3.2.0)
   coffee-rails (~> 3.2.1)
   debugger
   json (= 1.8.0)

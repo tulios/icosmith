@@ -1,13 +1,32 @@
-<h1>IcoSmith</h1>
-<form id="b64upload" action="/generate_font" method="post" enctype="multipart/form-data">
-  <input type="hidden" name="base64zip" value="">
-</form>
+<div class="container">
+  <div class="row-fluid">
 
-<div class="info">
+    <div class="info">
+      <h3>what is this?</h3>
+      <h4>IcoSmith is an open source icon font generator</h4>
+    </div>
+
+    <%= form_tag generate_font_url, id: "smith-upload", class: "dropzone" do %>
+    <% end %>
+    <%= form_tag generate_font_url, multipart: true, id: :b64upload do %>
+      <input type="hidden" name="base64zip" value="">
+
+      <span class="hint">
+        <em>Only <strong>*.svg</strong> and the <strong>manifest.json</strong></em>
+      </span>
+
+      <div class="input-append">
+        <input type="text" name="family" placeholder="Family name">
+
+        <div class="input-append input-prepend">
+          <input type="text" name="version" placeholder="version 1.0">
+        </div>
+
+        <input type="submit" id="send" class="btn" value="Generate Font!">
+      </div>
+    <% end %>
+
+  </div>
 </div>
-<form id="smith-upload" action="/generate_font" method="post" enctype="multipart/form-data" class="dropzone">
-</form>
-<p>
-  <em>Only <strong>*.svg</strong> and the <strong>manifest.json</strong></em>
-</p>
-<button id="send">Generate Font!</button>
+
+<a href="https://github.com/tulios/icosmith" id="fork-me"><span>Fork me on GitHub</span></a>

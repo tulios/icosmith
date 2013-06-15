@@ -1,16 +1,26 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Icosmith</title>
-  <%= stylesheet_link_tag    "application", :media => "all" %>
+  <head>
+    <title>Icosmith</title>
+    <%= stylesheet_link_tag "application", media: "all" %>
+    <%= stylesheet_link_tag "http://fonts.googleapis.com/css?family=Lato" %>
 
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-  <%= javascript_include_tag "application" %>
-  <%= csrf_meta_tags %>
-</head>
-<body>
+    <%= javascript_include_tag "//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js" %>
+    <%= javascript_include_tag "application" %>
 
-<%= yield %>
+    <%= csrf_meta_tags %>
+    <meta property="og:title" content="IcoSmith"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:url" content="http://www.icosmith.com"/>
+    <meta property="og:site_name" content="IcoSmith"/>
+    <meta property="og:description" content="IcoSmith is an open source icon font generator"/>
+    <meta name="description" content="IcoSmith is an open source icon font generator" />
+  </head>
+  <body>
 
-</body>
+    <%= render partial: "shared/header" %>
+    <%= yield %>
+    <%= render partial: "shared/footer" %>
+
+  </body>
 </html>

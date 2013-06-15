@@ -1,0 +1,29 @@
+.navbar {
+  &.navbar-inverse {
+    .navbar-inner {
+      padding: 10px 0px 10px 0px;
+      border-radius: 0;
+      border: 0;
+    }
+
+    .brand {
+      color: #FFF;
+      font-size: 35px;
+    }
+  }
+
+  &.transparent.navbar-inverse .navbar-inner {
+    background: rgba(0, 0, 0, 0.4);
+    border-bottom: 1px solid #585858;
+  }
+
+  .container {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    -webkit-transition: margin .2s ease-in-out;
+    -moz-transition: margin .2s ease-in-out;
+    -ms-transition: margin .2s ease-in-out;
+    -o-transition: margin .2s ease-in-out;
+    transition: margin .2s ease-in-out;
+  }
+}

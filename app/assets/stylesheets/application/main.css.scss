@@ -1,0 +1,66 @@
+body {
+  background-color: #F7F7F7;
+  font-family: 'Lato', sans-serif;
+}
+
+form {
+  margin: 0;
+}
+
+.container {
+  max-width: 940px;
+  width: auto;
+}
+
+input[name="version"] {
+  width: 75px;
+}
+
+#b64upload {
+  margin-top: 10px;
+  text-align: right;
+
+  .hint {
+    float: left;
+    margin-top: 5px;
+  }
+}
+
+h3 {
+  color: #646464;
+  font-weight: 300;
+  font-style: italic;
+  border-bottom: 1px solid #B3B3B3;
+}
+
+.info {
+  margin-bottom: 40px;
+}
+
+a#fork-me {
+  position: absolute;
+  top: 0;
+  right: 0;
+  border: 0;
+  width: 140px;
+  height: 140px;
+  background-image: image_url("fork-me.png");
+  z-index: 1030;
+
+  span {
+    display: none;
+  }
+}
+
+footer {
+  margin-top: 19em;
+  background: #000;
+  padding-top: 3em;
+  padding-bottom: 6.25em;
+  color: #FFF;
+  zoom: 1;
+
+  section {
+    display: inline-block;
+  }
+}
