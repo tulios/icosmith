@@ -82,8 +82,6 @@ $(function() {
     return simpleManifest;
   }
 
-  window.tes = generateSimpleManifest;
-
   var dropzone = new Dropzone("#smith-upload");
 
   dropzone.on("addedfile", function(file) {

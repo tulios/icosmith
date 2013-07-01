@@ -3,13 +3,14 @@ require "zip_file_generator"
 class FontGeneratorController < ApplicationController
 
   def create
-    unless params["base64zip"].blank?
+    unless params[:base64zip].blank?
       @tmp_file = file = Tempfile.open(["#{Time.now.to_i}", ".zip"], encoding: "ascii-8bit")
-      file.write Base64.decode64(params["base64zip"])
+      file.write Base64.decode64(params[:base64zip])
+      file.close
 
       file_name = file.path.scan(/\/([^\/]+)$/).flatten.first
       dir_name = file.path.gsub(file_name, '').gsub(/\/$/, '')
-      temp_file = file
+      temp_file = File.open(file.path)
 
     else
       file = params["file"]
@@ -21,9 +22,9 @@ class FontGeneratorController < ApplicationController
     Dir.mktmpdir do |dir|
       upload_path = "#{dir}/#{dir_name}"
       unzip! temp_file, upload_path
-      manifest = load_manifest(upload_path)
+      manifest = load_manifest upload_path
       forge_font! manifest, upload_path
-      prepare_package! upload_path
+      prepare_package! manifest, upload_path
 
       filename = zip_name(manifest)
       result_path = zip! upload_path, filename
@@ -36,7 +37,6 @@ class FontGeneratorController < ApplicationController
     end
   ensure
     if @tmp_file
-      @tmp_file.close
       @tmp_file.unlink
     end
   end
@@ -67,70 +67,40 @@ class FontGeneratorController < ApplicationController
   end
 
   def zip_name manifest
-    return @filename if @filename
+    return manifest[:filename] if manifest[:filename]
     "#{manifest[:name].parameterize}-v#{manifest[:version]}-#{Time.now.to_i}.zip"
   end
 
   def load_manifest path
-    manifest = JSON.parse(File.read("#{path}/manifest.json")).symbolize_keys
-    manifest = default_manifest.merge(manifest)
-    manifest[:glyphs] = manifest[:glyphs].map {|glyph| default_glyph.merge(glyph.symbolize_keys)}
-    manifest[:name] = manifest[:family] unless manifest[:name]
-
-    @filename = manifest.delete(:filename)
-    manifest
+    Manifest.generate path
   end
 
   def forge_font! manifest, source_path
     build_path = File.expand_path(File.join(source_path, "build"))
     FileUtils.mkdir_p(build_path) unless File.exist?(build_path)
 
-    glyphs = manifest.delete(:glyphs)
     Blacksmith.forge do
       target build_path
       source File.expand_path(source_path)
 
-      manifest.each_pair do |key, value|
+      header_keys = manifest.keys.select {|key| Manifest::DEFAULT_MANIFEST.keys.include?(key)}
+      header_keys.each do |key|
+        value = manifest[key]
         self.send(key, value) if value
       end
 
-      glyphs.each do |g|
-        name = "#{g.delete(:name)}.svg"
-        code = g.delete(:code).to_i(16)
-        glyph name, {code: code}.merge(g)
+      manifest[:glyphs].each do |g|
+        name = "#{g[:name]}.svg"
+        code = g[:code].to_i(16)
+        glyph name, g.merge(code: code)
       end
     end
   end
 
-  def prepare_package! path
-    build_directory = "#{path}/build"
+  def prepare_package! manifest, upload_path
+    build_directory = "#{upload_path}/build"
     FileUtils.cp File.join(File.expand_path(Rails.root), "app/templates/extra/bootstrap.min.css"), build_directory
-  end
-
-  def default_manifest
-    {
-      name: nil,
-      family: "FontSmith Font",
-      weight: "Regular",
-      ascent: 800,
-      descent: 200,
-      version: "1.0",
-      copyright: "",
-      baseline: nil,
-      scale: nil,
-      offset: nil
-    }
-  end
-
-  def default_glyph
-    {
-      code: nil,
-      name: nil,
-      left_side_bearing: 15,
-      right_side_bearing: 15,
-      scale: nil,
-      offset: nil
-    }
+    File.open("#{build_directory}/manifest.json", "w") {|f| f.write(JSON.pretty_generate(manifest))}
   end
 
 end

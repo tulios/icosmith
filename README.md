@@ -4,11 +4,33 @@ is an open source icon font generator
 
 ## How to install
 
+### MAC OSX
 ```sh
 brew install fontforge
 brew install ttfautohint
 ```
 
+### CentOS 5.8
+
+FontForge
+```sh
+wget http://downloads.sourceforge.net/project/fontforge/fontforge-source/fontforge_full-20120731-b.tar.bz2
+bunzip fontforge_full-20120731-b.tar.bz2 
+tar xvf fontforge_full-20120731-b.tar 
+cd fontforge-20120731-b/ ; ./configure; make; make install
+```
+
+TTFAutoHint
+```sh
+wget http://download.savannah.gnu.org/releases/freetype/ttfautohint-0.95.tar.gz
+wget http://download.savannah.gnu.org/releases/freetype/freetype-2.4.12.tar.gz
+tar xvfz ttfautohint-0.95.tar.gz
+tar xvfz freetype-2.4.12.tar.gz
+cd freetype-2.4.12 ; ./configure ; make ; make install
+cd ttfautohint-0.95 ; ./configure --with-qt=no; make ; make install
+```
+
+### App
 ```sh
 bundle install
 rails s
@@ -21,7 +43,7 @@ The application should now be running at localhost:3000.
 ```json
 {
   "filename": "my-file-name", // optional
-  "name": "example1-font", // optional
+  "name": "my-css-font-name", // optional
   "family": "Example1",
   "version": "1.0",
   "copyright": "some copyright", //optional
