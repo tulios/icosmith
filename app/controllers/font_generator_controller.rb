@@ -4,30 +4,33 @@ class FontGeneratorController < ApplicationController
 
   def create
     unless params[:base64zip].blank?
-      @tmp_file = file = Tempfile.open(["#{Time.now.to_i}", ".zip"], encoding: "ascii-8bit")
+      file = Tempfile.open(["#{Time.now.to_i}", ".zip"], encoding: "ascii-8bit")
       file.write Base64.decode64(params[:base64zip])
-      file.close
+      file.close # ensure the write, odd cases :/
 
       file_name = file.path.scan(/\/([^\/]+)$/).flatten.first
       dir_name = file.path.gsub(file_name, '').gsub(/\/$/, '')
-      temp_file = File.open(file.path)
+      @temp_file = File.open(file.path)
 
     else
       file = params["file"]
       file_name = file[:filename]
       dir_name = file_name.gsub(/\.zip$/, '')
-      temp_file = file[:tempfile].path
+      @temp_file = file[:tempfile].path
     end
 
     Dir.mktmpdir do |dir|
       upload_path = "#{dir}/#{dir_name}"
-      unzip! temp_file, upload_path
-      manifest = load_manifest upload_path
-      forge_font! manifest, upload_path
-      prepare_package! manifest, upload_path
+      unzip! @temp_file, upload_path
+
+      manifest = Manifest.generate(upload_path)
+      builder = FontBuilder.new(manifest, upload_path)
+
+      builder.build!
+      prepare_package! manifest, builder
 
       filename = zip_name(manifest)
-      result_path = zip! upload_path, filename
+      result_path = zip! upload_path, filename, builder
 
       send_file(result_path, {
         filename: filename,
@@ -36,8 +39,9 @@ class FontGeneratorController < ApplicationController
       })
     end
   ensure
-    if @tmp_file
-      @tmp_file.unlink
+    if @temp_file
+      @temp_file.close
+      @temp_file.unlink if @temp_file.respond_to?(:unlink)
     end
   end
 
@@ -54,8 +58,8 @@ class FontGeneratorController < ApplicationController
     end
   end
 
-  def zip! path, filename
-    diretory_to_zip = "#{path}/build"
+  def zip! path, filename, builder
+    diretory_to_zip = builder.build_path
     output_file = "#{path}/#{filename}"
     destination = "tmp/#{filename}"
 
@@ -71,36 +75,9 @@ class FontGeneratorController < ApplicationController
     "#{manifest[:name].parameterize}-v#{manifest[:version]}-#{Time.now.to_i}.zip"
   end
 
-  def load_manifest path
-    Manifest.generate path
-  end
-
-  def forge_font! manifest, source_path
-    build_path = File.expand_path(File.join(source_path, "build"))
-    FileUtils.mkdir_p(build_path) unless File.exist?(build_path)
-
-    Blacksmith.forge do
-      target build_path
-      source File.expand_path(source_path)
-
-      header_keys = manifest.keys.select {|key| Manifest::DEFAULT_MANIFEST.keys.include?(key)}
-      header_keys.each do |key|
-        value = manifest[key]
-        self.send(key, value) if value
-      end
-
-      manifest[:glyphs].each do |g|
-        name = "#{g[:name]}.svg"
-        code = g[:code].to_i(16)
-        glyph name, g.merge(code: code)
-      end
-    end
-  end
-
-  def prepare_package! manifest, upload_path
-    build_directory = "#{upload_path}/build"
-    FileUtils.cp File.join(File.expand_path(Rails.root), "app/templates/extra/bootstrap.min.css"), build_directory
-    File.open("#{build_directory}/manifest.json", "w") {|f| f.write(JSON.pretty_generate(manifest))}
+  def prepare_package! manifest, builder
+    FileUtils.cp File.join(File.expand_path(Rails.root), "app/templates/extra/bootstrap.min.css"), builder.build_path
+    File.open("#{builder.build_path}/manifest.json", "w") {|f| f.write(Manifest.filter_to_save(manifest))}
   end
 
 end

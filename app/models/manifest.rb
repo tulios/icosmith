@@ -1,4 +1,6 @@
 class Manifest
+
+  FILENAME = "manifest.json"
   FIRST_CHAR = 57345
 
   DEFAULT_MANIFEST = {
@@ -23,34 +25,80 @@ class Manifest
     offset: nil
   }
 
-  def self.generate upload_path
-    char = FIRST_CHAR
-    svgs = Dir.entries(upload_path).select {|f| f =~ /\.svg$/}.map {|f| f.gsub(/\.svg$/, '')}
+  def initialize params = {}
+    super params
+  end
 
-    if File.exist?("#{upload_path}/manifest.json")
-      manifest = JSON.parse(File.read("#{upload_path}/manifest.json")).symbolize_keys
-      manifest = DEFAULT_MANIFEST.merge(manifest)
-      manifest[:glyphs] = manifest[:glyphs].map {|glyph| DEFAULT_GLYPH.merge(glyph.symbolize_keys)}
-      char = manifest[:glyphs].last[:code].to_i(16) + 1
+  def self.generate path
+    hash = exist?(path) ? generate_by_file(path) : generate_new
+    hash[:name] = hash[:family] unless hash[:name]
 
-      already_configured = manifest[:glyphs].collect {|h| h[:name]}
-      svgs.reject! {|name| already_configured.include?(name)}
-    else
-      manifest = DEFAULT_MANIFEST
-      manifest[:glyphs] = []
+    last_glyph = hash[:glyphs].last
+    first_char = last_glyph ? last_glyph[:code] + 1 : FIRST_CHAR
+    update_glyphs! hash, path, first_char
+
+    hash
+  end
+
+  def self.exist? path
+    File.exist?("#{path}/#{FILENAME}")
+  end
+
+  def self.read path
+    JSON.parse(File.read("#{path}/#{FILENAME}")).deep_symbolize_keys
+  end
+
+  def self.get_svgs_from path, exclude = []
+    Dir.entries(path).
+      select {|f| f =~ /\.svg$/}.
+      map {|f| f.gsub(/\.svg$/, '')}.
+      reject {|name| exclude.include?(name)}
+  rescue Errno::ENOENT
+    []
+  end
+
+  def self.filter_to_save hash
+    glyphs = hash.delete :glyphs
+    result = {}
+
+    (DEFAULT_MANIFEST.keys - [:baseline, :scale, :offset, :copyright]).each do |key|
+      value = hash[key]
+      result[key] = value if value
     end
 
-    svgs.each do |name|
-      manifest[:glyphs] << new_glyph(name, char)
+    result[:copyright] = hash[:copyright] unless hash[:copyright].blank?
+    result[:glyphs] = glyphs.map {|g| {code: "0x#{g[:code].to_s(16)}", name: g[:name]}}
+    JSON.pretty_generate result
+  end
+
+  private
+  def self.generate_by_file path
+    hash = DEFAULT_MANIFEST.merge read(path)
+    hash[:glyphs] = hash[:glyphs].map {|hash| new_glyph_by_hex(hash.deep_symbolize_keys)}
+    hash
+  end
+
+  def self.generate_new
+    hash = DEFAULT_MANIFEST
+    hash[:glyphs] = []
+    hash
+  end
+
+  def self.update_glyphs! hash, path, first_char
+    char = first_char
+    already_configured = hash[:glyphs].collect {|h| h[:name]}
+    get_svgs_from(path, already_configured).each do |name|
+      hash[:glyphs] << new_glyph(name, char)
       char += 1
     end
-
-    manifest[:name] = manifest[:family] unless manifest[:name]
-    manifest
   end
 
   def self.new_glyph name, char
-    DEFAULT_GLYPH.merge({name: name, code: "0x#{char.to_s(16)}"})
+    DEFAULT_GLYPH.merge(name: name, code: char)
   end
 
+  def self.new_glyph_by_hex hash
+    code = hash[:code].to_i(16)
+    DEFAULT_GLYPH.merge(hash.merge(code: code))
+  end
 end

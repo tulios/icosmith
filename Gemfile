@@ -7,6 +7,7 @@ gem 'json',                    '1.8.0'
 
 group :development, :test do
   gem 'debugger'
+  gem 'rspec-rails'
 end
 
 group :assets do
