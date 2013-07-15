@@ -66,7 +66,7 @@ class FontGeneratorController < ApplicationController
     zip_file = ZipFileGenerator.new diretory_to_zip, output_file
     zip_file.write
 
-    FileUtils.mv output_file, File.extend_path(File.join(Rails.root, destination))
+    FileUtils.mv output_file, File.expand_path(File.join(Rails.root, destination))
     File.expand_path(destination)
   end
 
