@@ -8,6 +8,7 @@ is an open source icon font generator
 ```sh
 brew install fontforge
 brew install ttfautohint
+brew install ttf2eot
 ```
 
 ### CentOS 5.8
@@ -28,6 +29,15 @@ tar xvfz ttfautohint-0.95.tar.gz
 tar xvfz freetype-2.4.12.tar.gz
 cd freetype-2.4.12 ; ./configure ; make ; make install
 cd ttfautohint-0.95 ; ./configure --with-qt=no; make ; make install
+```
+
+ttf2eot (check: https://code.google.com/p/ttf2eot/issues/detail?id=26)
+```sh
+wget https://ttf2eot.googlecode.com/files/ttf2eot-0.0.2-2.tar.gz
+tar xvfz ttf2eot-0.0.2-2.tar.gz
+cd ttf2eot-0.0.2-2
+make
+cp ttf2eot /usr/bin
 ```
 
 ### App

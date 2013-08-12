@@ -76,10 +76,11 @@ describe Manifest do
       it "should merge the defaults" do
         manifest = Manifest.generate(path)
 
-        (Manifest::DEFAULT_MANIFEST.keys - [:family, :name]).each do |key|
+        (Manifest::DEFAULT_MANIFEST.keys - [:family, :name, :version]).each do |key|
           expect(manifest[key]).to eql Manifest::DEFAULT_MANIFEST[key]
         end
 
+        expect(manifest[:version]).to eql "1.0"
         expect(manifest[:family]).to eql hash[:family]
       end
 

@@ -26,6 +26,8 @@ class FontBuilder
         glyph name, g
       end
     end
+
+    generate_eot
   end
 
   def header_keys
@@ -34,6 +36,15 @@ class FontBuilder
 
   def glyphs
     @manifest[:glyphs]
+  end
+
+  private
+  def generate_eot
+    ttf_filename = Dir.entries(@build_path).find {|name| name =~ /\.ttf$/}
+    eot_filename = ttf_filename.gsub(/\.ttf/, ".eot")
+    cmd = "ttf2eot #{@build_path}/#{ttf_filename} > #{@build_path}/#{eot_filename}"
+    puts cmd
+    system cmd
   end
 
 end

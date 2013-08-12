@@ -9,7 +9,7 @@ class Manifest
     weight: "Regular",
     ascent: 800,
     descent: 200,
-    version: "1.0",
+    version: nil,
     copyright: "",
     baseline: nil,
     scale: nil,
@@ -32,6 +32,7 @@ class Manifest
   def self.generate path
     hash = exist?(path) ? generate_by_file(path) : generate_new
     hash[:name] = hash[:family] unless hash[:name]
+    hash[:version] = (hash[:version] || "1").ljust(3, ".0")
 
     last_glyph = hash[:glyphs].last
     first_char = last_glyph ? last_glyph[:code] + 1 : FIRST_CHAR
