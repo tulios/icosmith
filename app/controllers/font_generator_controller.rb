@@ -14,9 +14,9 @@ class FontGeneratorController < ApplicationController
 
     else
       file = params["file"]
-      file_name = file[:filename]
+      file_name = file.original_filename
       dir_name = file_name.gsub(/\.zip$/, '')
-      @temp_file = file[:tempfile].path
+      @temp_file = file.tempfile
     end
 
     Dir.mktmpdir do |dir|
