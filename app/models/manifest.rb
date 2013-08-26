@@ -31,7 +31,9 @@ class Manifest
 
   def self.generate path
     hash = exist?(path) ? generate_by_file(path) : generate_new
-    hash[:name] = hash[:family] unless hash[:name]
+    # font name needs to be the same as family name
+    # to prevent IE8 from not rendering eot format
+    hash[:name] = hash[:family]
     hash[:version] = (hash[:version] || "1").ljust(3, ".0")
 
     last_glyph = hash[:glyphs].last
