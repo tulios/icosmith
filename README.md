@@ -1,6 +1,6 @@
 # IcoSmith
 
-is an open source icon font generator
+is an open source icon font generator server
 
 ## How to install
 

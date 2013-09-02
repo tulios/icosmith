@@ -35,6 +35,9 @@ GEM
       railties (>= 3.1.0)
       sass-rails (>= 3.1.0)
     builder (3.0.4)
+    byebug (2.0.0)
+      columnize (~> 0.3.6)
+      debugger-linecache (~> 1.2.0)
     coffee-rails (3.2.2)
       coffee-script (>= 2.2.0)
       railties (~> 3.2.0)
@@ -43,12 +46,7 @@ GEM
       execjs
     coffee-script-source (1.6.2)
     columnize (0.3.6)
-    debugger (1.6.0)
-      columnize (>= 0.3.1)
-      debugger-linecache (~> 1.2.0)
-      debugger-ruby_core_source (~> 1.2.1)
     debugger-linecache (1.2.0)
-    debugger-ruby_core_source (1.2.2)
     diff-lcs (1.2.4)
     erubis (2.7.0)
     execjs (1.4.0)
@@ -127,8 +125,8 @@ PLATFORMS
 DEPENDENCIES
   blacksmith (= 0.3.2)
   bootstrap-sass-rails (= 2.3.2.0)
+  byebug
   coffee-rails (~> 3.2.1)
-  debugger
   json (= 1.8.0)
   rails (= 3.2.13)
   rspec-rails

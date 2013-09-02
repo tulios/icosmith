@@ -76,7 +76,19 @@ class FontGeneratorController < ApplicationController
   end
 
   def prepare_package! manifest, builder
-    FileUtils.cp File.join(File.expand_path(Rails.root), "app/templates/extra/bootstrap.min.css"), builder.build_path
+    example_path = "#{builder.build_path}/example"
+    example_css = File.join(File.expand_path(Rails.root), "app/templates/extra/bootstrap.min.css")
+    fonts_path = "#{builder.build_path}/fonts"
+
+    FileUtils.mkdir_p example_path
+    FileUtils.mkdir_p fonts_path
+    
+    Dir.glob("#{builder.build_path}/*.{ttf,woff,svg,eot,afm}").each do |file|
+      FileUtils.mv(file, fonts_path)
+    end
+    
+    FileUtils.cp example_css, example_path
+    FileUtils.mv Dir["#{builder.build_path}/*.html"].first, example_path
     File.open("#{builder.build_path}/manifest.json", "w") {|f| f.write(Manifest.filter_to_save(manifest))}
   end
 

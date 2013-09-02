@@ -6,7 +6,7 @@ gem 'rubyzip',                 '0.9.9'
 gem 'json',                    '1.8.0'
 
 group :development, :test do
-  gem 'debugger'
+  gem 'byebug'
   gem 'rspec-rails'
 end
 

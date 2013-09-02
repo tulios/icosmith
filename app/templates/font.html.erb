@@ -4,7 +4,7 @@
     <meta charset=utf-8 />
     <title><%= font.name %> | FontSmith</title>
     <link rel="stylesheet" href="bootstrap.min.css" />
-    <link rel="stylesheet" href="<%= File.basename(font.css_path) %>" />
+    <link rel="stylesheet" href="../<%= File.basename(font.css_path) %>" />
     <style type="text/css">
       body {
         margin: 30px 40px;
@@ -36,12 +36,6 @@
   </head>
   <body>
     <h1><%= font.name %> v<%= font.version %> - <a href="https://github.com/tulios/icosmith" target="_blank">IcoSmith</a></h1>
-
-    <ul class="unstyled">
-    <% [:ttf, :eot, :woff, :svg].each do |extension| %>
-      <li><a href="<%= "#{font.basename}.#{extension}" %>"><%= "#{font.basename}.#{extension}" %></a></li>
-    <% end %>
-    </ul>
 
     <table class="glyphs table">
       <thead>
