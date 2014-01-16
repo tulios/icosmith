@@ -14,6 +14,7 @@
   letter-spacing: 0;
   speak: none;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 <% for glyph in font.glyphs do %>
 .<%= font.identifier %>.<%= glyph.name %>:before{content:'\<%= "\%04x" % glyph.code %>'}
