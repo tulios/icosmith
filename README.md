@@ -11,13 +11,30 @@ brew install ttfautohint
 brew install ttf2eot
 ```
 
+### Ubuntu
+
+FontForge && TTFAutoHint
+
+```sh
+apt-get install fontforge ttfautohint
+```
+
+ttf2eot (check: https://code.google.com/p/ttf2eot/issues/detail?id=26)
+```sh
+wget https://ttf2eot.googlecode.com/files/ttf2eot-0.0.2-2.tar.gz
+tar xvfz ttf2eot-0.0.2-2.tar.gz
+cd ttf2eot-0.0.2-2
+make
+cp ttf2eot /usr/bin
+```
+
 ### CentOS 5.8
 
 FontForge
 ```sh
 wget http://downloads.sourceforge.net/project/fontforge/fontforge-source/fontforge_full-20120731-b.tar.bz2
-bunzip fontforge_full-20120731-b.tar.bz2 
-tar xvf fontforge_full-20120731-b.tar 
+bunzip fontforge_full-20120731-b.tar.bz2
+tar xvf fontforge_full-20120731-b.tar
 cd fontforge-20120731-b/ ; ./configure; make; make install
 ```
 
