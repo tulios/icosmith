@@ -57,7 +57,17 @@ make
 cp ttf2eot /usr/bin
 ```
 
-### App
+### Docker
+
+There's a [Docker image](https://registry.hub.docker.com/u/ggarnier/icosmith/) available to run Icosmith server. To use it:
+
+```sh
+docker run --rm --name icosmith -p 3000:3000 ggarnier/icosmith
+```
+
+The application will be accessible at port 3000 of the host machine.
+
+## Running
 ```sh
 bundle install
 rails s
