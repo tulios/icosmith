@@ -1,4 +1,4 @@
-source 'https://rubygems.org'
+source 'http://artifactory.globoi.com/artifactory/api/gems/gem-repos/'
 
 gem 'rails',                   '3.2.13'
 gem 'blacksmith',              '0.3.2'
