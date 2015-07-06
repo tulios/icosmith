@@ -1,4 +1,4 @@
-source 'http://artifactory.globoi.com/artifactory/api/gems/gem-repos/'
+source 'https://rubygems.org'
 
 gem 'rails',                   '3.2.13'
 gem 'blacksmith',              '0.3.2'
@@ -9,6 +9,10 @@ gem 'therubyracer',            '0.12.2'
 group :development, :test do
   gem 'byebug'
   gem 'rspec-rails'
+end
+
+group :production do
+  gem 'puma'
 end
 
 group :assets do

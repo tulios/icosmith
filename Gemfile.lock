@@ -1,5 +1,5 @@
 GEM
-  remote: http://artifactory.globoi.com/artifactory/api/gems/gem-repos/
+  remote: https://rubygems.org/
   specs:
     actionmailer (3.2.13)
       actionpack (= 3.2.13)
@@ -62,6 +62,8 @@ GEM
     mime-types (1.23)
     multi_json (1.7.7)
     polyglot (0.3.3)
+    puma (2.11.3)
+      rack (>= 1.1, < 2.0)
     rack (1.4.5)
     rack-cache (1.2)
       rack (>= 0.4)
@@ -133,6 +135,7 @@ DEPENDENCIES
   byebug
   coffee-rails (~> 3.2.1)
   json (= 1.8.0)
+  puma
   rails (= 3.2.13)
   rspec-rails
   rubyzip (= 0.9.9)
